@@ -79,13 +79,13 @@ export function SaxDiagram({ pressedKeys }: Props) {
            C106 180 102 300 106 396
            C108 444 138 464 168 458
            C196 452 206 430 204 402
-           C202 360 204 320 212 288
-           C218 264 228 252 240 244
-           L216 220
-           C206 234 196 252 192 280
-           C188 310 186 350 186 398
-           C186 424 170 438 152 434
-           C138 430 130 416 132 398
+           C202 366 208 330 218 306
+           C224 292 229 286 235 282
+           L200 255
+           C190 266 181 286 175 310
+           C170 338 168 368 169 394
+           C169 420 160 432 149 430
+           C138 427 130 414 132 398
            C136 300 136 180 134 60
            Z"
         fill="url(#brass)"
@@ -93,23 +93,23 @@ export function SaxDiagram({ pressedKeys }: Props) {
         strokeWidth={2}
         strokeLinejoin="round"
       />
-      {/* ベルのリム */}
+      {/* ベルのリム(長軸の両端を筒の輪郭の終端に一致させる) */}
       <ellipse
-        cx={228}
-        cy={230}
-        rx={26}
-        ry={11}
-        transform="rotate(-38 228 230)"
+        cx={218}
+        cy={268}
+        rx={22}
+        ry={9.5}
+        transform="rotate(38 218 268)"
         fill="#f2cd6b"
         stroke="#8a5f0e"
         strokeWidth={2}
       />
       <ellipse
-        cx={228}
-        cy={230}
-        rx={18}
-        ry={7}
-        transform="rotate(-38 228 230)"
+        cx={218}
+        cy={268}
+        rx={16}
+        ry={6.5}
+        transform="rotate(38 218 268)"
         fill="#7a5a10"
         opacity={0.55}
       />
@@ -123,7 +123,7 @@ export function SaxDiagram({ pressedKeys }: Props) {
         opacity={0.7}
       />
       <path
-        d="M196 380 C196 340 198 310 204 286"
+        d="M197 380 C196 344 198 318 205 298"
         fill="none"
         stroke="#fbe9a8"
         strokeWidth={3}
