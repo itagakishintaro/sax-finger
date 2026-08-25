@@ -79,11 +79,11 @@ export function SaxDiagram({ pressedKeys }: Props) {
            C106 180 102 300 106 396
            C108 444 138 464 168 458
            C196 452 206 430 204 402
-           C202 366 208 330 218 306
-           C224 292 229 286 235 282
-           L200 255
-           C190 266 181 286 175 310
-           C170 338 168 368 169 394
+           C202 366 208 330 216 308
+           C222 292 234 288 245 282
+           L195 242
+           C184 252 176 272 172 300
+           C168 330 167 364 169 394
            C169 420 160 432 149 430
            C138 427 130 414 132 398
            C136 300 136 180 134 60
@@ -95,21 +95,21 @@ export function SaxDiagram({ pressedKeys }: Props) {
       />
       {/* ベルのリム(長軸の両端を筒の輪郭の終端に一致させる) */}
       <ellipse
-        cx={218}
-        cy={268}
-        rx={22}
-        ry={9.5}
-        transform="rotate(38 218 268)"
+        cx={220}
+        cy={262}
+        rx={40}
+        ry={16}
+        transform="rotate(38 220 262)"
         fill="#f2cd6b"
         stroke="#8a5f0e"
         strokeWidth={2}
       />
       <ellipse
-        cx={218}
-        cy={268}
-        rx={16}
-        ry={6.5}
-        transform="rotate(38 218 268)"
+        cx={220}
+        cy={262}
+        rx={30}
+        ry={11}
+        transform="rotate(38 220 262)"
         fill="#7a5a10"
         opacity={0.55}
       />
