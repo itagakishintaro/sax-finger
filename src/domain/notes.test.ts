@@ -20,6 +20,17 @@ describe('noteId', () => {
   })
 })
 
+describe('SELECTABLE_NATURALS', () => {
+  it('シ3〜ファ6の幹音19音が音高順に並ぶ', async () => {
+    const { SELECTABLE_NATURALS } = await import('./notes')
+    expect(SELECTABLE_NATURALS).toHaveLength(19)
+    expect(SELECTABLE_NATURALS[0]).toEqual(note({ pitch: 'B', octave: 3 }))
+    expect(SELECTABLE_NATURALS[1]).toEqual(note({ pitch: 'C', octave: 4 }))
+    expect(SELECTABLE_NATURALS[18]).toEqual(note({ pitch: 'F', octave: 6 }))
+    expect(SELECTABLE_NATURALS.every((n) => n.accidental === 'natural')).toBe(true)
+  })
+})
+
 describe('noteName', () => {
   it('幹音はカタカナのみ', () => {
     expect(noteName(note({ pitch: 'F' }))).toBe('ファ')

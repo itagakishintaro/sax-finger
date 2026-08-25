@@ -2,29 +2,34 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { StaffSelector } from './StaffSelector'
-import type { Note, PitchName } from '../domain/notes'
+import { SELECTABLE_NATURALS, noteAriaLabel, type Note, type PitchName } from '../domain/notes'
 
-const natural = (pitch: PitchName): Note => ({ pitch, accidental: 'natural', octave: 4 })
-const NOTES = (['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const).map(natural)
+const natural = (pitch: PitchName, octave: Note['octave'] = 4): Note => ({
+  pitch,
+  accidental: 'natural',
+  octave,
+})
 
 describe('StaffSelector', () => {
-  it('全音符がボタンとして表示される', () => {
-    render(<StaffSelector notes={NOTES} onSelect={() => {}} />)
-    for (const name of ['ド', 'レ', 'ミ', 'ファ', 'ソ', 'ラ', 'シ']) {
-      expect(screen.getByRole('button', { name })).toBeInTheDocument()
+  it('全音符がオクターブ付きのアクセシブル名を持つボタンとして表示される', () => {
+    render(<StaffSelector notes={SELECTABLE_NATURALS} onSelect={() => {}} />)
+    for (const note of SELECTABLE_NATURALS) {
+      expect(screen.getByRole('button', { name: noteAriaLabel(note) })).toBeInTheDocument()
     }
   })
 
   it('音符をクリックするとonSelectが呼ばれる', async () => {
     const onSelect = vi.fn()
-    render(<StaffSelector notes={NOTES} onSelect={onSelect} />)
-    await userEvent.click(screen.getByRole('button', { name: 'ソ' }))
-    expect(onSelect).toHaveBeenCalledWith(natural('G'))
+    render(<StaffSelector notes={SELECTABLE_NATURALS} onSelect={onSelect} />)
+    await userEvent.click(screen.getByRole('button', { name: 'ソ5' }))
+    expect(onSelect).toHaveBeenCalledWith(natural('G', 5))
   })
 
   it('選択中の音符はaria-pressedになる', () => {
-    render(<StaffSelector notes={NOTES} selected={natural('A')} onSelect={() => {}} />)
-    expect(screen.getByRole('button', { name: 'ラ' })).toHaveAttribute('aria-pressed', 'true')
-    expect(screen.getByRole('button', { name: 'ド' })).toHaveAttribute('aria-pressed', 'false')
+    render(
+      <StaffSelector notes={SELECTABLE_NATURALS} selected={natural('A')} onSelect={() => {}} />,
+    )
+    expect(screen.getByRole('button', { name: 'ラ4' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'ラ5' })).toHaveAttribute('aria-pressed', 'false')
   })
 })

@@ -2,14 +2,7 @@ import { useState } from 'react'
 import { StaffSelector } from './components/StaffSelector'
 import { SaxDiagram } from './components/SaxDiagram'
 import { getFingering } from './domain/fingerings'
-import { noteName, type Note, type PitchName } from './domain/notes'
-
-const PITCHES: readonly PitchName[] = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
-const NOTES: readonly Note[] = PITCHES.map((pitch) => ({
-  pitch,
-  accidental: 'natural',
-  octave: 4,
-}))
+import { noteName, SELECTABLE_NATURALS, type Note } from './domain/notes'
 
 export default function App() {
   const [selected, setSelected] = useState<Note>()
@@ -22,7 +15,7 @@ export default function App() {
         <p className="text-sm">五線譜の音符をタップすると、サックスの運指を表示します</p>
       </header>
       <main className="flex flex-col items-center gap-6 py-6">
-        <StaffSelector notes={NOTES} selected={selected} onSelect={setSelected} />
+        <StaffSelector notes={SELECTABLE_NATURALS} selected={selected} onSelect={setSelected} />
         {selected ? (
           <>
             <p className="text-lg">
