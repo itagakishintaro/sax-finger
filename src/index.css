@@ -12,4 +12,9 @@
   body {
     @apply bg-paper text-ink;
   }
+
+  /* マウスクリックではフォーカス枠を出さず、キーボード操作時のみ表示する */
+  svg [role='button']:focus:not(:focus-visible) {
+    outline: none;
+  }
 }
