@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Sax Fingerアイコン: 真鍮色の地に、アプリと同じサックスイラスト(押さえたキーは赤) -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#c8901f"/>
+      <stop offset="1" stop-color="#8a5f0e"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g transform="translate(118 30) scale(0.96)">
+    <path d="M34 24 C40 12 52 8 62 12 L66 30 C56 38 44 36 38 32 Z" fill="#3d2e0a"/>
+    <path d="M52 12 C94 2 128 22 140 58 L114 66 C104 38 82 24 56 30 Z"
+      fill="#fff3d0" stroke="#5c430a" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M112 62
+      C106 180 102 300 106 396
+      C108 444 138 464 168 458
+      C196 452 206 430 204 402
+      C202 366 208 330 216 308
+      C222 292 234 288 245 282
+      L195 242
+      C184 252 176 272 172 300
+      C168 330 167 364 169 394
+      C169 420 160 432 149 430
+      C138 427 130 414 132 398
+      C136 300 136 180 134 60
+      Z"
+      fill="#fff3d0" stroke="#5c430a" stroke-width="6" stroke-linejoin="round"/>
+    <ellipse cx="220" cy="262" rx="40" ry="16" transform="rotate(38 220 262)"
+      fill="#fff3d0" stroke="#5c430a" stroke-width="6"/>
+    <ellipse cx="220" cy="262" rx="30" ry="11" transform="rotate(38 220 262)" fill="#5c430a" opacity="0.6"/>
+    <g stroke="#5c430a" stroke-width="5">
+      <circle cx="122" cy="140" r="15" fill="#e0312f"/>
+      <circle cx="122" cy="182" r="15" fill="#e0312f"/>
+      <circle cx="122" cy="224" r="15" fill="#e0312f"/>
+      <circle cx="124" cy="294" r="15" fill="#ffffff"/>
+      <circle cx="124" cy="336" r="15" fill="#ffffff"/>
+      <circle cx="126" cy="378" r="15" fill="#ffffff"/>
+    </g>
+  </g>
+</svg>
