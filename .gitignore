@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.features-gen/
+test-results/
+playwright-report/
+.playwright-mcp/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+.DS_Store
+*.local
