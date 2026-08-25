@@ -109,6 +109,33 @@ export function getFingering(note: Note): readonly KeyId[] | undefined {
   return normalized && FINGERINGS[noteId(normalized)]
 }
 
+export interface AlternateFingering {
+  label: string
+  keys: readonly KeyId[]
+}
+
+/** 替え指マスタ(記譜音・シャープ表記)。一般的な運指表で確立しているもののみ収録 */
+const ALTERNATES: Record<string, readonly AlternateFingering[]> = {
+  'A#4': [
+    { label: 'サイドB♭', keys: ['L1', 'sideBb'] },
+    { label: '1&1', keys: ['L1', 'R1'] },
+  ],
+  'A#5': [
+    { label: 'サイドB♭', keys: ['octave', 'L1', 'sideBb'] },
+    { label: '1&1', keys: ['octave', 'L1', 'R1'] },
+  ],
+  C5: [{ label: 'サイドC', keys: ['L1', 'sideC'] }],
+  C6: [{ label: 'サイドC', keys: ['octave', 'L1', 'sideC'] }],
+  'F#4': [{ label: '替えF#', keys: ['L1', 'L2', 'L3', 'R3'] }],
+  'F#5': [{ label: '替えF#', keys: ['octave', 'L1', 'L2', 'L3', 'R3'] }],
+}
+
+/** 音に対応する替え指の一覧を返す。ない場合は空配列 */
+export function getAlternateFingerings(note: Note): readonly AlternateFingering[] {
+  const normalized = normalize(note)
+  return (normalized && ALTERNATES[noteId(normalized)]) ?? []
+}
+
 /** その音をアプリで選択できるか。ミ#・シ#・ファ♭・ド♭と運指未定義の音は不可 */
 export function isSelectable(note: Note): boolean {
   if (note.accidental === 'sharp' && (note.pitch === 'E' || note.pitch === 'B')) return false
