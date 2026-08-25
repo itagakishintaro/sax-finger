@@ -32,4 +32,16 @@ describe('StaffSelector', () => {
     expect(screen.getByRole('button', { name: 'ラ4' })).toHaveAttribute('aria-pressed', 'true')
     expect(screen.getByRole('button', { name: 'ラ5' })).toHaveAttribute('aria-pressed', 'false')
   })
+
+  it('選択不可の音符はaria-disabledになりクリックしてもonSelectが呼ばれない', async () => {
+    const sharps = SELECTABLE_NATURALS.map((n) => ({ ...n, accidental: 'sharp' as const }))
+    const onSelect = vi.fn()
+    render(<StaffSelector notes={sharps} onSelect={onSelect} />)
+    const disabled = screen.getByRole('button', { name: 'ミ#4' })
+    expect(disabled).toHaveAttribute('aria-disabled', 'true')
+    await userEvent.click(disabled)
+    expect(onSelect).not.toHaveBeenCalled()
+    await userEvent.click(screen.getByRole('button', { name: 'ソ#4' }))
+    expect(onSelect).toHaveBeenCalledWith({ pitch: 'G', accidental: 'sharp', octave: 4 })
+  })
 })

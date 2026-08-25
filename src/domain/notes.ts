@@ -39,6 +39,21 @@ export function noteAriaLabel(note: Note): string {
   return `${noteName(note)}${note.octave}`
 }
 
+/** 異名同音(ソ# ⇔ ラ♭)。幹音はundefined。ミ#・シ#・ファ♭・ド♭は扱わない(isSelectableで除外) */
+export function enharmonicEquivalent(note: Note): Note | undefined {
+  if (note.accidental === 'sharp') {
+    const upper: Partial<Record<PitchName, PitchName>> = { C: 'D', D: 'E', F: 'G', G: 'A', A: 'B' }
+    const pitch = upper[note.pitch]
+    return pitch && { pitch, accidental: 'flat', octave: note.octave }
+  }
+  if (note.accidental === 'flat') {
+    const lower: Partial<Record<PitchName, PitchName>> = { D: 'C', E: 'D', G: 'F', A: 'G', B: 'A' }
+    const pitch = lower[note.pitch]
+    return pitch && { pitch, accidental: 'sharp', octave: note.octave }
+  }
+  return undefined
+}
+
 const PITCH_ORDER: readonly PitchName[] = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 
 /** 選択可能な幹音(シ3〜ファ6)を音高順に並べた一覧 */
