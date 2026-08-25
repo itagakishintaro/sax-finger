@@ -50,8 +50,9 @@ export const KEY_IDS: readonly KeyId[] = [
   'lowC',
 ]
 
-/** 基本運指マスタ(記譜音)。MVPはド4〜シ4の幹音のみ。全音域は後続Issueで追加 */
+/** 基本運指マスタ(記譜音)。幹音シ3〜ファ6。#/♭は後続Issueで追加 */
 const FINGERINGS: Record<string, readonly KeyId[]> = {
+  B3: ['L1', 'L2', 'L3', 'R1', 'R2', 'R3', 'lowB'],
   C4: ['L1', 'L2', 'L3', 'R1', 'R2', 'R3', 'lowC'],
   D4: ['L1', 'L2', 'L3', 'R1', 'R2', 'R3'],
   E4: ['L1', 'L2', 'L3', 'R1', 'R2'],
@@ -59,6 +60,18 @@ const FINGERINGS: Record<string, readonly KeyId[]> = {
   G4: ['L1', 'L2', 'L3'],
   A4: ['L1', 'L2'],
   B4: ['L1'],
+  C5: ['L2'],
+  // レ5〜シ5は下のオクターブと同じ運指にオクターブキーを加える
+  D5: ['octave', 'L1', 'L2', 'L3', 'R1', 'R2', 'R3'],
+  E5: ['octave', 'L1', 'L2', 'L3', 'R1', 'R2'],
+  F5: ['octave', 'L1', 'L2', 'L3', 'R1'],
+  G5: ['octave', 'L1', 'L2', 'L3'],
+  A5: ['octave', 'L1', 'L2'],
+  B5: ['octave', 'L1'],
+  C6: ['octave', 'L2'],
+  D6: ['octave', 'palmD'],
+  E6: ['octave', 'palmD', 'palmEb', 'sideE'],
+  F6: ['octave', 'palmD', 'palmEb', 'palmF', 'sideE'],
 }
 
 /** 音に対応する基本運指を返す。未対応の音はundefined */
