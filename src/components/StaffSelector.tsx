@@ -1,4 +1,7 @@
+import { isSelectable } from '../domain/fingerings'
 import { noteAriaLabel, noteId, noteName, type Note, type PitchName } from '../domain/notes'
+
+const ACCIDENTAL_GLYPH = { sharp: '♯', flat: '♭', natural: '' } as const
 
 interface Props {
   notes: readonly Note[]
@@ -61,19 +64,24 @@ export function StaffSelector({ notes, selected, onSelect }: Props) {
           const x = FIRST_X + i * NOTE_GAP + NOTE_GAP / 2
           const y = noteY(note)
           const isSelected = noteId(note) === selectedId
+          const disabled = !isSelectable(note)
+          const select = () => {
+            if (!disabled) onSelect(note)
+          }
           return (
             <g
               key={noteId(note)}
               role="button"
-              tabIndex={0}
+              tabIndex={disabled ? -1 : 0}
               aria-label={noteAriaLabel(note)}
               aria-pressed={isSelected}
-              className="cursor-pointer"
-              onClick={() => onSelect(note)}
+              aria-disabled={disabled}
+              className={disabled ? 'opacity-30' : 'cursor-pointer'}
+              onClick={select}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault()
-                  onSelect(note)
+                  select()
                 }
               }}
             >
@@ -96,6 +104,17 @@ export function StaffSelector({ notes, selected, onSelect }: Props) {
                   strokeWidth={1}
                 />
               ))}
+              {note.accidental !== 'natural' && (
+                <text
+                  x={x - 12}
+                  y={y + 5}
+                  fontSize={15}
+                  textAnchor="end"
+                  fill={isSelected ? 'var(--color-pressed)' : 'currentColor'}
+                >
+                  {ACCIDENTAL_GLYPH[note.accidental]}
+                </text>
+              )}
               <ellipse
                 cx={x}
                 cy={y}

@@ -1,12 +1,18 @@
 import { describe, it, expect } from 'vitest'
-import { getFingering, KEY_IDS } from './fingerings'
-import type { Note, PitchName } from './notes'
+import { getFingering, isSelectable, KEY_IDS } from './fingerings'
+import type { Accidental, Note, PitchName } from './notes'
 
 const natural = (pitch: PitchName, octave: Note['octave'] = 4): Note => ({
   pitch,
   accidental: 'natural',
   octave,
 })
+
+const withAcc = (
+  pitch: PitchName,
+  accidental: Accidental,
+  octave: Note['octave'] = 4,
+): Note => ({ pitch, accidental, octave })
 
 describe('getFingering(ド4〜シ4の幹音)', () => {
   it.each([
@@ -31,7 +37,58 @@ describe('getFingering(ド4〜シ4の幹音)', () => {
 
   it('未対応の音はundefined', () => {
     expect(getFingering(natural('C', 3))).toBeUndefined()
-    expect(getFingering({ pitch: 'C', accidental: 'sharp', octave: 4 })).toBeUndefined()
+    expect(getFingering(withAcc('A', 'sharp', 6))).toBeUndefined()
+  })
+})
+
+describe('getFingering(シャープ・フラット)', () => {
+  it.each([
+    ['シ♭3', withAcc('B', 'flat', 3), ['L1', 'L2', 'L3', 'R1', 'R2', 'R3', 'lowBb']],
+    ['ド#4', withAcc('C', 'sharp'), ['L1', 'L2', 'L3', 'R1', 'R2', 'R3', 'lowCsharp']],
+    ['ミ♭4', withAcc('E', 'flat'), ['L1', 'L2', 'L3', 'R1', 'R2', 'R3', 'lowEb']],
+    ['ファ#4', withAcc('F', 'sharp'), ['L1', 'L2', 'L3', 'R2']],
+    ['ソ#4', withAcc('G', 'sharp'), ['L1', 'L2', 'L3', 'gSharp']],
+    ['シ♭4', withAcc('B', 'flat'), ['L1', 'bis']],
+    ['ミ♭6', withAcc('E', 'flat', 6), ['octave', 'palmD', 'palmEb']],
+    [
+      'ファ#6',
+      withAcc('F', 'sharp', 6),
+      ['octave', 'palmD', 'palmEb', 'palmF', 'sideE', 'highFsharp'],
+    ],
+  ] as const)('%s の運指', (_label, note, expected) => {
+    expect(getFingering(note)).toEqual(expected)
+  })
+
+  it('ド#5は開放(空配列)', () => {
+    expect(getFingering(withAcc('C', 'sharp', 5))).toEqual([])
+  })
+
+  it('異名同音は同じ運指(フラット→シャープに正規化)', () => {
+    expect(getFingering(withAcc('D', 'flat'))).toEqual(getFingering(withAcc('C', 'sharp')))
+    expect(getFingering(withAcc('A', 'flat', 5))).toEqual(getFingering(withAcc('G', 'sharp', 5)))
+  })
+
+  it('ソ#5はソ5+オクターブキーではなく専用定義に従う(ソ#4+octave)', () => {
+    expect(getFingering(withAcc('G', 'sharp', 5))).toEqual(['octave', 'L1', 'L2', 'L3', 'gSharp'])
+  })
+})
+
+describe('isSelectable', () => {
+  it('ミ#・シ#・ファ♭・ド♭は選べない', () => {
+    expect(isSelectable(withAcc('E', 'sharp'))).toBe(false)
+    expect(isSelectable(withAcc('B', 'sharp'))).toBe(false)
+    expect(isSelectable(withAcc('F', 'flat'))).toBe(false)
+    expect(isSelectable(withAcc('C', 'flat'))).toBe(false)
+  })
+  it('運指が定義されている音は選べる(開放のド#5も含む)', () => {
+    expect(isSelectable(withAcc('G', 'sharp'))).toBe(true)
+    expect(isSelectable(withAcc('B', 'flat', 3))).toBe(true)
+    expect(isSelectable(withAcc('F', 'sharp', 6))).toBe(true)
+    expect(isSelectable(withAcc('C', 'sharp', 5))).toBe(true)
+  })
+  it('運指が未定義の音は選べない', () => {
+    expect(isSelectable(natural('A', 3))).toBe(false)
+    expect(isSelectable(withAcc('A', 'sharp', 6))).toBe(false)
   })
 })
 

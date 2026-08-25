@@ -40,3 +40,23 @@ describe('noteName', () => {
     expect(noteName(note({ pitch: 'A', accidental: 'flat' }))).toBe('ラ♭')
   })
 })
+
+describe('enharmonicEquivalent', () => {
+  it('シャープは上の音のフラット', async () => {
+    const { enharmonicEquivalent } = await import('./notes')
+    expect(enharmonicEquivalent(note({ pitch: 'G', accidental: 'sharp' }))).toEqual(
+      note({ pitch: 'A', accidental: 'flat' }),
+    )
+  })
+  it('フラットは下の音のシャープ', async () => {
+    const { enharmonicEquivalent } = await import('./notes')
+    expect(enharmonicEquivalent(note({ pitch: 'E', accidental: 'flat' }))).toEqual(
+      note({ pitch: 'D', accidental: 'sharp' }),
+    )
+  })
+  it('幹音はundefined', async () => {
+    const { enharmonicEquivalent } = await import('./notes')
+    expect(enharmonicEquivalent(note({ pitch: 'G' }))).toBeUndefined()
+  })
+})
+
