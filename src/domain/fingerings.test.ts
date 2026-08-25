@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getFingering, isSelectable, KEY_IDS } from './fingerings'
+import { getAlternateFingerings, getFingering, isSelectable, KEY_IDS } from './fingerings'
 import type { Accidental, Note, PitchName } from './notes'
 
 const natural = (pitch: PitchName, octave: Note['octave'] = 4): Note => ({
@@ -70,6 +70,59 @@ describe('getFingering(シャープ・フラット)', () => {
 
   it('ソ#5はソ5+オクターブキーではなく専用定義に従う(ソ#4+octave)', () => {
     expect(getFingering(withAcc('G', 'sharp', 5))).toEqual(['octave', 'L1', 'L2', 'L3', 'gSharp'])
+  })
+})
+
+describe('getAlternateFingerings', () => {
+  it('シ♭4はサイドB♭と1&1の2つ', () => {
+    expect(getAlternateFingerings(withAcc('B', 'flat'))).toEqual([
+      { label: 'サイドB♭', keys: ['L1', 'sideBb'] },
+      { label: '1&1', keys: ['L1', 'R1'] },
+    ])
+  })
+
+  it('シ♭5はオクターブキー付きの同じ替え指', () => {
+    expect(getAlternateFingerings(withAcc('B', 'flat', 5))).toEqual([
+      { label: 'サイドB♭', keys: ['octave', 'L1', 'sideBb'] },
+      { label: '1&1', keys: ['octave', 'L1', 'R1'] },
+    ])
+  })
+
+  it('異名同音(ラ#4)でも同じ替え指', () => {
+    expect(getAlternateFingerings(withAcc('A', 'sharp'))).toEqual(
+      getAlternateFingerings(withAcc('B', 'flat')),
+    )
+  })
+
+  it('ド5・ド6はサイドC', () => {
+    expect(getAlternateFingerings(natural('C', 5))).toEqual([
+      { label: 'サイドC', keys: ['L1', 'sideC'] },
+    ])
+    expect(getAlternateFingerings(natural('C', 6))).toEqual([
+      { label: 'サイドC', keys: ['octave', 'L1', 'sideC'] },
+    ])
+  })
+
+  it('ファ#4・ファ#5は替えF#(薬指)', () => {
+    expect(getAlternateFingerings(withAcc('F', 'sharp'))).toEqual([
+      { label: '替えF#', keys: ['L1', 'L2', 'L3', 'R3'] },
+    ])
+    expect(getAlternateFingerings(withAcc('F', 'sharp', 5))).toEqual([
+      { label: '替えF#', keys: ['octave', 'L1', 'L2', 'L3', 'R3'] },
+    ])
+  })
+
+  it('替え指のない音は空配列', () => {
+    expect(getAlternateFingerings(natural('G'))).toEqual([])
+    expect(getAlternateFingerings(natural('A', 3))).toEqual([])
+  })
+
+  it('替え指はすべて定義済みキーのみで構成される', () => {
+    for (const note of [withAcc('B', 'flat'), withAcc('B', 'flat', 5), natural('C', 5)]) {
+      for (const alt of getAlternateFingerings(note)) {
+        for (const key of alt.keys) expect(KEY_IDS).toContain(key)
+      }
+    }
   })
 })
 
