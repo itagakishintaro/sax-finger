@@ -56,10 +56,26 @@ export function StaffSelector({ notes, selected, onSelect }: Props) {
             strokeWidth={1}
           />
         ))}
-        {/* ト音記号(フォント未対応環境では省略表示になる) */}
-        <text x={12} y={99} fontSize={58} fill="currentColor" aria-hidden>
-          {'\u{1D11E}'}
-        </text>
+        {/* ト音記号(モノライン風の簡略パス。フォント非依存) */}
+        <path
+          d="M30 112
+             C24 116 18 112 19 106
+             C20 101 26 100 28 105
+             C30 110 29 114 28 118
+             L36 44
+             C37 34 32 30 28 34
+             C24 38 26 46 31 53
+             C38 62 44 70 44 80
+             C44 92 36 99 28 99
+             C20 99 15 92 16 85
+             C17 78 24 75 28 79
+             C32 83 30 89 25 90"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.6}
+          strokeLinecap="round"
+          aria-hidden
+        />
         {notes.map((note, i) => {
           const x = FIRST_X + i * NOTE_GAP + NOTE_GAP / 2
           const y = noteY(note)
